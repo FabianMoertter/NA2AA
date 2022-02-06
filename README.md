@@ -28,10 +28,10 @@ find the example output also in the file `genes.fasta`.
 
 ## Issues
 
-  * input formats have to be exactly the same format as in the example
-  * make sure the intervals index is 1-based (not 0-based)
+  * input formats should be exactly the same format as in the example
+  * slightly different results possible, depending on whether start and stop are inclusive or exclusive and if the intervals are zero or one-based
+  * start codon could not properly implemented
 
 ## Future Development
-  * add tests with `pytest` 
   * this is just a small showcase project
 
