@@ -52,6 +52,7 @@ def get_mRNA_from_intervals(sequences, intervals, index_start=0, index_stop=1):
                     id=sequence.id,
                     name='>' + row['id']
                     ))
+            # add reverse complement
             mRNAs.append(
                     SeqRecord(
                     Seq(sequence.seq[start:stop].reverse_complement()),
@@ -79,12 +80,6 @@ def get_longest_translations_from_mRNA(mRNAs, codon_mapping):
             if len(longest_seq) > len(longest_translations[mRNA.name]):
                 longest_translations[mRNA.name] = longest_seq
 
-            # # repeat for reverse complement
-            # translated_mRNA = translate_mRNA(mRNA.seq[i:].reverse_complement(), codon_mapping)
-            # longest_seq = get_longest_aa_sequence(translated_mRNA)
-            # if len(longest_seq) > len(longest_translations[mRNA.name]):
-            #     longest_translations[mRNA.name] = longest_seq
-
     return longest_translations
 
 
@@ -98,7 +93,7 @@ def translate_mRNA(sequence, codon_mapping):
 
     n = len(sequence)
     
-    for i in range(0, n - n % 3, 3):
+    for i in range(0, n - n % 3, 3):  # from https://github.com/biopython/biopython/blob/master/Bio/Seq.py
         codon = sequence[i : i+3]
         aa_sequence += codon_mapping[codon]
 
