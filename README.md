@@ -28,9 +28,8 @@ find the example output also in the file `genes.fasta`.
 
 ## Issues
 
-  * input formats have to be exactly the same format as in the example (check tabs and whitespaces)
+  * input formats have to be exactly the same format as in the example
   * make sure the intervals index is 1-based (not 0-based)
-  * start codon is ATG/M
 
 ## Future Development
   * add tests with `pytest` 
