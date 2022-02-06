@@ -1,4 +1,5 @@
 import argparse
+from pkg_resources import resource_stream
 from Bio import SeqIO
 
 
@@ -29,12 +30,15 @@ def main():
         help="Path to file containing mRNA coordinates",
     )
     parser.add_argument(
-        "--codon_sun",
+        "--codon_code",
         "-c",
-        dest="aa_code",
+        dest="codon_code",
         help="Path to file that maps codons to amino acids.",
     )
     args = parser.parse_args()
-    sequences = get_records(args['sequences'])
-    args["sequences"]
+    print(args)
+    # sequences = get_records(args['sequences'])
+    # args["sequences"]
+    with open(args.codon_code) as handle:
+        print(handle.readline())
 
