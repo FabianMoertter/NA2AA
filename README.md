@@ -11,29 +11,26 @@ Clone the repository then change into the directory and execute:
 pip install .
 ```
 
-Uninstall:
-```
-pip uninstall na2aa
-```
-
 ## Usage
 
 ```
-na2aa -s <sequences.fasta> -i <intervals.gff>
+na2aa -s <sequences.fasta> -i <intervals.gff> -c <standard_code.txt>
 ```
 
 ## Example
 
 In the example folder, run:
 ```
-na2aa -s sequences.fasta -i intervals.gff
+na2aa -s sequences.fasta -i intervals.gff -c standard_code.txt
 ```
 The output is printed to the command line but you can
 find the example output also in the file `genes.fasta`.
 
 ## Issues
 
-  * make sure the intervals index is 1-based (not 0-based) and follows the same format as in the example
+  * input formats have to be exactly the same format as in the example (check tabs and whitespaces)
+  * make sure the intervals index is 1-based (not 0-based)
+  * start codon is ATG/M
 
 ## Future Development
   * add tests with `pytest` 

@@ -1,27 +1,62 @@
 import argparse
-from pkg_resources import resource_stream
+import pandas as pd
 from Bio import SeqIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 
-def get_records(sequences):
-    records = SeqIO.parse(sequences, "fasta")
-    return records
+def get_sequences(sequences):
+    return SeqIO.parse(sequences, "fasta")
 
 
-def get_mRNA_from_intervals(sequneces, intervals, start=1):
-    pass
+def get_intervals(intervals, sep="\t", col="chr", dtype={'start': int, 'stop': int}):
+    return pd.read_csv(intervals, sep=sep, index_col=col)
 
 
-def translate_mRNA(mRNA, codon_sun, reading_frame=(1, 2, 3, 4, 5, 6)):
-    pass
+def get_codon_mapping(codon_code, header=True):
+    codon_mapping = {}
+    with open(codon_code) as handle:
+
+        if header:  # a header in the file will be ignored
+            handle.readline()
+
+        for line in handle:
+            split = line.split()
+            codon_mapping[split[0]] = split[1]
+
+    return codon_mapping
+
+
+def get_mRNA_from_intervals(sequences, intervals, index_start=0):
+    mRNAs = []
+
+    for sequence in sequences:
+        interval = (intervals[intervals.index == sequence.id])
+
+        for _, row in interval.iterrows():
+            start = row['start'] + index_start
+            stop = row['stop'] + 1
+
+            mRNA = SeqRecord(
+                    Seq(sequence.seq[start:stop].reverse_complement()),
+                    id=sequence.id,
+                    name='>' + row['id']
+                    )
+            mRNAs.append(mRNA)  
+
+    return mRNAs
 
 
 def main():
+# if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Translate DNA to amino acid within given intervals"
     )
     parser.add_argument(
-        "--sequences","-s", dest="sequences", help="Path to file containing DNA sequences."
+        "--sequences",
+        "-s",
+        dest="sequences",
+        help="Path to file containing DNA sequences.",
     )
     parser.add_argument(
         "--intervals",
@@ -36,9 +71,9 @@ def main():
         help="Path to file that maps codons to amino acids.",
     )
     args = parser.parse_args()
-    print(args)
-    # sequences = get_records(args['sequences'])
-    # args["sequences"]
-    with open(args.codon_code) as handle:
-        print(handle.readline())
 
+    sequences = get_sequences(args.sequences)
+    intervals = get_intervals(args.intervals)
+    codon_mapping = get_codon_mapping(args.codon_code)
+
+    mRNAs = get_mRNA_from_intervals(sequences, intervals)
