@@ -48,9 +48,7 @@ def get_mRNA_from_intervals(sequences, intervals, index_start=0, index_stop=1):
 
             mRNAs.append(
                 SeqRecord(
-                    Seq(sequence.seq[start:stop]), 
-                    id=sequence.id, 
-                    name=">" + row["id"]
+                    Seq(sequence.seq[start:stop]), id=sequence.id, name=">" + row["id"]
                 )
             )
             # add reverse complement
@@ -96,9 +94,7 @@ def translate_mRNA(sequence, codon_mapping):
     n = len(sequence)
 
     # from https://github.com/biopython/biopython/blob/master/Bio/Seq.py
-    for i in range(
-        0, n - n % 3, 3
-    ):
+    for i in range(0, n - n % 3, 3):
         codon = sequence[i : i + 3]
         aa_sequence += codon_mapping[codon]
 
