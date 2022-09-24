@@ -9,7 +9,7 @@ def get_sequences(sequences):
     return SeqIO.parse(sequences, "fasta")
 
 
-def get_intervals(intervals, sep="\t", col="chr", dtype={"start": int, "stop": int}):
+def get_intervals(intervals, sep="\t", col="chr"):
     return pd.read_csv(intervals, sep=sep, index_col=col)
 
 
@@ -48,7 +48,9 @@ def get_mRNA_from_intervals(sequences, intervals, index_start=0, index_stop=1):
 
             mRNAs.append(
                 SeqRecord(
-                    Seq(sequence.seq[start:stop]), id=sequence.id, name=">" + row["id"]
+                    Seq(sequence.seq[start:stop]), 
+                    id=sequence.id, 
+                    name=">" + row["id"]
                 )
             )
             # add reverse complement
